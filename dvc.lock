@@ -1,0 +1,101 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: be6b3c621d0b96979f192fd32768d0aa
+      size: 2875
+    outs:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: e3685b4f9a457c51c2125212094a6cb6
+      size: 96178
+    - path: data/raw/train.csv
+      hash: md5
+      md5: e60af55462f3ed3e98d8e2d57badce95
+      size: 388668
+  feature_engineering:
+    cmd: python src/feature_engineering.py
+    deps:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: e3685b4f9a457c51c2125212094a6cb6
+      size: 96178
+    - path: data/raw/train.csv
+      hash: md5
+      md5: e60af55462f3ed3e98d8e2d57badce95
+      size: 388668
+    - path: src/feature_engineering.py
+      hash: md5
+      md5: 68f28e0264304c1e4bacb53323d13d38
+      size: 2987
+    outs:
+    - path: data/processed/X_test.pkl
+      hash: md5
+      md5: 7fc6175d174a8735a01fa5ff67588fbc
+      size: 168107
+    - path: data/processed/X_train.pkl
+      hash: md5
+      md5: b98570ac23af2892e07c1521d4aeead5
+      size: 728707
+    - path: data/processed/tfidf_vectorizer.pkl
+      hash: md5
+      md5: b59f0750a78182aecd2731c38b16c86b
+      size: 154007
+    - path: data/processed/y_test.pkl
+      hash: md5
+      md5: c69ea22438945d4bdf18e57d47192507
+      size: 5527
+    - path: data/processed/y_train.pkl
+      hash: md5
+      md5: 1bd58ee5b10c345ad2920c42cea38070
+      size: 18907
+  model_training:
+    cmd: python src/model_training.py
+    deps:
+    - path: data/processed/X_train.pkl
+      hash: md5
+      md5: b98570ac23af2892e07c1521d4aeead5
+      size: 728707
+    - path: data/processed/tfidf_vectorizer.pkl
+      hash: md5
+      md5: b59f0750a78182aecd2731c38b16c86b
+      size: 154007
+    - path: data/processed/y_train.pkl
+      hash: md5
+      md5: 1bd58ee5b10c345ad2920c42cea38070
+      size: 18907
+    - path: src/model_training.py
+      hash: md5
+      md5: f79baefcae27fdf23c65bbe501d3a8bf
+      size: 2444
+    outs:
+    - path: models/spam_classifier.pkl
+      hash: md5
+      md5: d79467a6bcd9332a13a2d4d398f47d0c
+      size: 62031
+    - path: models/tfidf_vectorizer.pkl
+      hash: md5
+      md5: b59f0750a78182aecd2731c38b16c86b
+      size: 154007
+  model_evaluation:
+    cmd: python src/model_evaluation.py
+    deps:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: e3685b4f9a457c51c2125212094a6cb6
+      size: 96178
+    - path: models/spam_classifier.pkl
+      hash: md5
+      md5: d79467a6bcd9332a13a2d4d398f47d0c
+      size: 62031
+    - path: models/tfidf_vectorizer.pkl
+      hash: md5
+      md5: b59f0750a78182aecd2731c38b16c86b
+      size: 154007
+    - path: src/model_evaluation.py
+      hash: md5
+      md5: ba6c1bb2df83bcb8b5d0d1221d30e79b
+      size: 2970
